@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_store_demo/features/home/presentation/blocs/product_bloc/product_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -9,21 +10,19 @@ import 'core/network/local_storage/local_storage.dart';
 import 'features/app/app.dart';
 
 Future<void> bootstrap(
-    WidgetsBinding widgetsBinding,
-    String environment,
-    ) async {
+  WidgetsBinding widgetsBinding,
+  String environment,
+) async {
   configureDependencies(environment: environment);
   await initializeDateFormatting('ru_RU');
   await dotenv.load(fileName: ".env");
   await LocalStorage.init();
   await Hive.initFlutter();
 
-
   runApp(
     MultiBlocProvider(
       providers: [
-        // BlocProvider<RegisterBloc>(create: (_) => getIt<RegisterBloc>()),
-
+        BlocProvider<ProductBloc>(create: (_) => getIt<ProductBloc>()),
       ],
       child: MyApp(),
     ),
